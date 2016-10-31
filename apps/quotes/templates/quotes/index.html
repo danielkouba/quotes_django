@@ -12,13 +12,10 @@
 
 
 <div class="wrapper">
-<header>
-		<!-- Making a reverse link looks like this -->
+<div class="nav">
 	<a href="{% url 'formv:logout' %}">Logout</a>
-	<!-- <a href="{#{% url 'formv:index' %}}">Logout</a> -->
-
-</header>
-
+	<!-- <a href="{% url 'quotes:index' %}">Dashboard</a> -->
+</div>
 
 	{% if messages %}
 		<ul class="messages">
@@ -32,53 +29,58 @@
 	{% endif %}
 
 
-	<h1 class="debug">Quotes</h1>
+	<h1 class="">Welcome {{alias}}</h1>
 
-	<div class="postwrapper">
-		{%for post in allposts%}
-		<div class="card">
-			<p>{{post.quotedby}}: {{post.message}}
-			</p>
-			<a href="{% url 'quotes:addfavorite' post.id %}">
-				<button>Add to my list</button>
-			</a>
-			<p>Posted by <a href="{% url 'quotes:showuser' post.postedby.id %}">{{post.postedby.alias}}</a></p>
+	<div class="col ib">
+		<h3>Quotable Quotes</h3>
+		<div class="postwrapper allquotes">
+			{%for post in allposts%}
+			<div class="card">
+				<p>{{post.quotedby}}: {{post.message}}
+				</p>
+				<p>Posted by <a href="{% url 'quotes:showuser' post.postedby.id %}">{{post.postedby.alias}}</a></p>
+							<a href="{% url 'quotes:addfavorite' post.id %}">
+					<button>Add to my list</button>
+				</a>
+			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
 	</div>
 
 
-	<div class="postwrapper">
-		{%for favorite in favorites%}
-		<div class="card">
-			<p>{{favorite.favoritequote.quotedby}}: {{favorite.favoritequote.message}}
-			</p>
-			<a href="{% url 'quotes:removefavorite' favorite.id %}">
-				<button>Remove from my list</button>
-			</a>
-			<p>Posted by <a href="{% url 'quotes:showuser' favorite.favoritequote.postedby.id %}">{{favorite.favoritequote.postedby.alias}}</a></p>
+	<div class="col ib">
+		<h3>Your Favorites</h3>
+		<div class="postwrapper favorites">
+			{%for favorite in favorites%}
+			<div class="card">
+				<p>{{favorite.favoritequote.quotedby}}: {{favorite.favoritequote.message}}
+				</p>
+				<p>Posted by <a href="{% url 'quotes:showuser' favorite.favoritequote.postedby.id %}">{{favorite.favoritequote.postedby.alias}}</a></p>
+				<a href="{% url 'quotes:removefavorite' favorite.id %}">
+					<button>Remove from my list</button>
+				</a>
+			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
-	</div>
-
-
-
-	<form action="{% url 'quotes:addquote' %}" method="POST">
+		
+		<form action="{% url 'quotes:addquote' %}" method="POST" class="addquote">
 		{% csrf_token %}
 		<fieldset>
-		<h1>Contribute a Quote</h1>
+		<legend>Contribute a Quote</legend>
 		<label for="quotedby">
 			Quoted by: 
 			<input type="text" name="quotedby" id="quotedby">	
 		</label>
 		<label for="message">
 			Message: 
-			<input type="text" name="message" id="message">
+			<textarea name="message" id="message"></textarea>
 		</label>
 		
 		<input type="submit" value="Submit">
 		</fieldset>
 	</form>
+
+	</div>
 </div>
 </body>
 </html>

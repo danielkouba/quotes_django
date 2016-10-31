@@ -12,12 +12,11 @@
 
 
 <div class="wrapper">
-<header>
-	<a href="{% url 'formv:logout' %}">Logout</a>
+
+<div class="nav">
 	<a href="{% url 'quotes:index' %}">Dashboard</a>
-
-
-</header>
+	<a href="{% url 'formv:logout' %}">Logout</a>
+</div>
 
 
 	{% if messages %}
@@ -32,18 +31,17 @@
 	{% endif %}
 
 
-	<h1 class="debug">All Quotes By {{alias}}</h1>
+	<h1 class="">All Quotes By {{alias}}</h1>
 	<h3>Count: {{count}}</h3>
 
 	<div class="postwrapper">
 		{%for post in allposts%}
-		<div class="card">
-			<p>{{post.quotedby}}: {{post.message}}
-			</p>
+		<div class="quote">
+			<h4><span class="red">{{post.quotedby}}:</span> {{post.message}}
+			</h4>
 <!-- 			<a href="{% url 'quotes:addfavorite' quoteid=post.id %}">
 				<button>Add to my list</button>
 			</a> -->
-			<p>Posted by {{post.postedby.alias}}</p>
 		</div>
 		{% endfor %}
 	</div>
