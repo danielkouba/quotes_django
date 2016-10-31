@@ -23,9 +23,14 @@ def index(request):
 def addQuote(request):
 	#if request method == POST
 	post = request.POST
-	user = User.objects.get(id = request.session['logged_user'])
-	Quote.objects.create(postedby=user, quotedby=post['quotedby'], message=post['message'])
-	messages.success(request, 'You successfully added a quote!')
+	errors = Quote.objects.validate_post(post)
+	if len(errors) > 0:
+		for error in errors:
+			messages.error(request, error)
+	else:
+		user = User.objects.get(id = request.session['logged_user'])
+		Quote.objects.create(postedby=user, quotedby=post['quotedby'], message=post['message'])
+		messages.success(request, 'You successfully added a quote!')
 	return redirect('quotes:index')
 
 def addFavorite(request,quoteid):
